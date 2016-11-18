@@ -31,7 +31,7 @@ int main()
   // Read the XML file into a vector
   ifstream configFile ("configFile.xml");
   vector<char> buffer((istreambuf_iterator<char>(configFile)), istreambuf_iterator<char>());
-	buffer.push_back('\0');
+  buffer.push_back('\0');
 
   // Parse the buffer into doc
   doc.parse<0>(&buffer[0]);
