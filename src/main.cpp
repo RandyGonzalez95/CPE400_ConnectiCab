@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include "../includes/taxi.h"
-#include "../assets/rapidxml-1.13/rapidxml.hpp"
+#include "taxi.h"
+#include "rapidxml-1.13/rapidxml.hpp"
 
 using namespace std;
 using namespace rapidxml;
