@@ -65,7 +65,7 @@ bool readIn(Simulation *taxiSimulation)
   taxiSimulation->setBluetoothRange(root_node->first_attribute("range")->value());
 
   // Get root taxis node
-  root_node = root_node->next_sibling();
+  root_node = root_node->next_sibling("Taxis");
 
   // Iterate over the taxis
 	for(xml_node<> *taxi_node = root_node->first_node("Taxi"); taxi_node; taxi_node = taxi_node->next_sibling("Taxi"))
