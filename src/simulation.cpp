@@ -33,6 +33,7 @@ void Simulation::setBluetoothRange(char* btRange)
   bluetoothRange = atof(btRange);
   std::cout << "Bluetooth Range: " << bluetoothRange << std::endl;
 }
+
 void Simulation::setWifiRange(char* wfRange)
 {
   wifiRange = atof(wfRange);
@@ -55,4 +56,9 @@ void Simulation::outputTaxis()
     std::cout << "Destination Y Coord: " << taxis[i].destinationYCoord << std::endl;
     std::cout << "Speed: " << taxis[i].speed << std::endl;
   }
+}
+
+bool Simulation::generateGraph()
+{
+
 }

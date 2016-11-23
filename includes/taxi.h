@@ -9,6 +9,8 @@ class Taxi {
   public:
     Taxi();
     ~Taxi();
+
+    // Data member sets
     void setLocationXCoord(char* xCoord);
     void setLocationYCoord(char* yCoord);
     void setDestinationXCoord(char* xCoord);

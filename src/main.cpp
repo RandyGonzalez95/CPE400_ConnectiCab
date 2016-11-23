@@ -20,6 +20,9 @@ int main()
     return 0;
   }
 
+  // Generate the graph between all taxis
+  taxiSimulation->generateGraph();
+
   return 0;
 }
 
