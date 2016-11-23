@@ -1,31 +1,20 @@
 #include <fstream>
-#include <iostream>
-#include <vector>
-#include "taxi.h"
+#include "simulation.h"
 #include "rapidxml-1.13/rapidxml.hpp"
 
 using namespace std;
 using namespace rapidxml;
 
-struct MetaData {
-  char* mapXSize;
-  char* mapYSize;
-  char* units;
-  char* bluetoothRange;
-  char* wifiRange;
-};
-
 /* Reads in all data from the given XML configFile. */
-bool readIn(MetaData &metaData, vector<Taxi> &taxis);
+bool readIn(Simulation *taxiSimulation);
 
 int main()
 {
-  // Variables
-  vector<Taxi> taxis;
-  MetaData metaData;
+  // Create new taxi simulation
+  Simulation *taxiSimulation = new Simulation();
 
   // Read in data from XML config file
-  if(!readIn(metaData, taxis))
+  if(!readIn(taxiSimulation))
   {
     cout << "ERROR: Error in reading in XML file\n";
     return 0;
@@ -34,7 +23,7 @@ int main()
   return 0;
 }
 
-bool readIn(MetaData &metaData, vector<Taxi> &taxis)
+bool readIn(Simulation *taxiSimulation)
 {
   // Variables
   xml_document<> doc;
@@ -60,17 +49,17 @@ bool readIn(MetaData &metaData, vector<Taxi> &taxis)
 
   // Get Map Size and units used
   root_node = root_node->first_node("MapSize");
-  metaData.units = root_node->first_attribute("units")->value();
-  metaData.mapXSize = root_node->first_attribute("xSize")->value();
-  metaData.mapYSize = root_node->first_attribute("ySize")->value();
+  taxiSimulation->setMapUnits(root_node->first_attribute("units")->value());
+  taxiSimulation->setMapXSize(root_node->first_attribute("xSize")->value());
+  taxiSimulation->setMapYSize(root_node->first_attribute("ySize")->value());
 
   // Get Wifi Range
   root_node = root_node->next_sibling("Wifi");
-  metaData.wifiRange = root_node->first_attribute("range")->value();
+  taxiSimulation->setWifiRange(root_node->first_attribute("range")->value());
 
   // Get Bluetooth Range
   root_node = root_node->next_sibling("Bluetooth");
-  metaData.bluetoothRange = root_node->first_attribute("range")->value();
+  taxiSimulation->setBluetoothRange(root_node->first_attribute("range")->value());
 
   // Get root taxis node
   root_node = root_node->next_sibling();
@@ -84,20 +73,22 @@ bool readIn(MetaData &metaData, vector<Taxi> &taxis)
 
     // Taxi location xCoord and yCoord
     taxiInfo_node = taxi_node->first_node("Location");
-    temp.locationXCoord = taxiInfo_node->first_attribute("xCoord")->value();
-    temp.locationYCoord = taxiInfo_node->first_attribute("yCoord")->value();
+    temp.setLocationXCoord(taxiInfo_node->first_attribute("xCoord")->value());
+    temp.setLocationYCoord(taxiInfo_node->first_attribute("yCoord")->value());
 
     // Taxi destination xCoord and yCoord
     taxiInfo_node = taxiInfo_node->next_sibling("Destination");
-    temp.destinationXCoord = taxiInfo_node->first_attribute("xCoord")->value();
-    temp.destinationYCoord = taxiInfo_node->first_attribute("xCoord")->value();
+    temp.setDestinationXCoord(taxiInfo_node->first_attribute("xCoord")->value());
+    temp.setDestinationYCoord(taxiInfo_node->first_attribute("xCoord")->value());
 
     // Taxi speed
     taxiInfo_node = taxiInfo_node->next_sibling("Speed");
-    temp.speed = taxiInfo_node->first_attribute("value")->value();
+    temp.setSpeed(taxiInfo_node->first_attribute("value")->value());
 
-    taxis.push_back(temp);
+    taxiSimulation->addTaxi(temp);
 	}
+
+  taxiSimulation->outputTaxis();
 
   return true;
 }
