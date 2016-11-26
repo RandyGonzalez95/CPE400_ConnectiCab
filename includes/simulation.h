@@ -21,6 +21,8 @@ class Simulation {
 
     void outputTaxis(); // Output all taxis in the taxis vector
     float calculateDistance(Taxi a, Taxi b); // Calculate distance between taxi a and b using pythagorean theorem
+    bool updateTaxiLocations();
+    void updateTaxiBroadcasts();
     void startSimulation();
 
   private:

@@ -81,7 +81,7 @@ bool readIn(Simulation *taxiSimulation)
     // Taxi destination xCoord and yCoord
     taxiInfo_node = taxiInfo_node->next_sibling("Destination");
     temp.setDestinationXCoord(taxiInfo_node->first_attribute("xCoord")->value());
-    temp.setDestinationYCoord(taxiInfo_node->first_attribute("xCoord")->value());
+    temp.setDestinationYCoord(taxiInfo_node->first_attribute("yCoord")->value());
 
     // Taxi speed
     taxiInfo_node = taxiInfo_node->next_sibling("Speed");

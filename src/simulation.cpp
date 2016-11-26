@@ -65,41 +65,63 @@ float Simulation::calculateDistance(Taxi a, Taxi b)
   return calculation;
 }
 
-void Simulation::startSimulation()
+bool Simulation::updateTaxiLocations()
+{
+  bool movementFlag = false;
+
+  for(unsigned int i = 0; i < taxis.size(); i++)
+  {
+    if(taxis[i].updateLocation())
+    {
+      movementFlag = true;
+    }
+  }
+
+  return movementFlag;
+}
+
+void Simulation::updateTaxiBroadcasts()
 {
   float distance;
 
-  for(int test = 0; test < 5; test++)
+  // Check for taxis to broadcast to
+  for(unsigned int i = 0; i < taxis.size(); i++)
   {
-    // Update all taxis location
-    for(unsigned int i = 0; i < taxis.size(); i++)
+    for(unsigned int j = 0; j < taxis.size(); j++)
     {
-      taxis[i].updateLocation();
-    }
+      if(i == j) // Do nothing as it is the same taxi
+      {}
 
-    // Check for taxis to broadcast to
-    for(unsigned int i = 0; i < taxis.size(); i++)
-    {
-      for(unsigned int j = 0; j < taxis.size(); j++)
+      else // Check if the distance is small enough to start broadcasting
       {
-        if(i == j) // Do nothing as it is the same taxi
-        {}
-          
-        else // Check if the distance is small enough to start broadcasting
-        {
-          distance = calculateDistance(taxis[i], taxis[j]);
-          if(distance < wifiRange)
-          {
-            std::cout << "Taxi " << i << " is broadcasting wifi to Taxi " << j << std::endl << std::endl;
-          }
+        distance = calculateDistance(taxis[i], taxis[j]);
 
-          if(distance < bluetoothRange)
-          {
-            std::cout << "Taxi " << i << " is broadcasting bluetooth to Taxi " << j << std::endl << std::endl;
-          }
+        if(distance < bluetoothRange)
+        {
+          std::cout << "Taxi " << i << " is broadcasting bluetooth to Taxi " << j << std::endl << std::endl;
         }
 
+        else if(distance < wifiRange)
+        {
+          std::cout << "Taxi " << i << " is broadcasting wifi to Taxi " << j << std::endl << std::endl;
+        }
       }
     }
+  }
+}
+
+void Simulation::startSimulation()
+{
+  bool taxiMovementFlag = true;
+
+  // Keep looping until all taxis reach their destination
+  while(taxiMovementFlag)
+  {
+    // Update all taxis location
+    taxiMovementFlag = updateTaxiLocations();
+
+    // Update the taxis each taxi is broadcasting to
+    updateTaxiBroadcasts();
+
   }
 }

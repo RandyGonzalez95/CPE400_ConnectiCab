@@ -2,11 +2,11 @@
 <ConnectiCab version="1.0">
   <MapSize xSize="20" ySize="20"/>
   <Wifi range="7"/>
-  <Bluetooth range="5"/>
+  <Bluetooth range="2"/>
   <Taxis>
     <Taxi>
-      <Location xCoord="1" yCoord="1"/>
-      <Destination xCoord="3" yCoord="3"/>
+      <Location xCoord="1" yCoord="2"/>
+      <Destination xCoord="7" yCoord="3"/>
       <Speed value="2"/>
     </Taxi>
     <Taxi>
