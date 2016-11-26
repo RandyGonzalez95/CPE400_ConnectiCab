@@ -71,6 +71,7 @@ bool Simulation::updateTaxiLocations()
 
   for(unsigned int i = 0; i < taxis.size(); i++)
   {
+    // Check if the taxi was updated, if it was set the movement flag
     if(taxis[i].updateLocation())
     {
       movementFlag = true;
@@ -96,12 +97,12 @@ void Simulation::updateTaxiBroadcasts()
       {
         distance = calculateDistance(taxis[i], taxis[j]);
 
-        if(distance < bluetoothRange)
+        if(distance <= bluetoothRange)
         {
           std::cout << "Taxi " << i << " is broadcasting bluetooth to Taxi " << j << std::endl << std::endl;
         }
 
-        else if(distance < wifiRange)
+        else if(distance <= wifiRange)
         {
           std::cout << "Taxi " << i << " is broadcasting wifi to Taxi " << j << std::endl << std::endl;
         }
@@ -117,11 +118,10 @@ void Simulation::startSimulation()
   // Keep looping until all taxis reach their destination
   while(taxiMovementFlag)
   {
-    // Update all taxis location
-    taxiMovementFlag = updateTaxiLocations();
-
     // Update the taxis each taxi is broadcasting to
     updateTaxiBroadcasts();
 
+    // Update all taxis location
+    taxiMovementFlag = updateTaxiLocations();
   }
 }
