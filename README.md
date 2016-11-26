@@ -4,6 +4,7 @@
 - Brett Knadle
 - Randy Gonzalez
 - Phillip Vong
+
 ## Running / Dependencies
 All code was tested using Linux 16.04. SDL2 must be installed on the machine using "sudo apt-get install libsdl2-2.0"
 
