@@ -17,12 +17,14 @@ class Taxi {
     void setDestinationYCoord(char* yCoord);
     void setSpeed(char* taxSpeed);
 
+    bool updateLocation(); // Update the location of the taxi based on its speed
+
   private:
     int locationXCoord;
     int locationYCoord;
     int destinationXCoord;
     int destinationYCoord;
-    double speed;
+    int speed;
 };
 
 #endif // TAXI_H

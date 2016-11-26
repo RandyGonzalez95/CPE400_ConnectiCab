@@ -30,5 +30,28 @@ void Taxi::setDestinationYCoord(char* yCoord)
 
 void Taxi::setSpeed(char* taxSpeed)
 {
-  speed = atof(taxSpeed);
+  speed = atoi(taxSpeed);
+}
+
+bool Taxi::updateLocation()
+{
+  // Move the taxi to the correct x Coord first
+  if(locationXCoord != destinationXCoord)
+  {
+    locationXCoord += speed;
+  }
+
+  // Then move it to the correct y Coord
+  else if(locationYCoord != destinationYCoord)
+  {
+    locationYCoord += speed;
+  }
+
+  // If taxi is at its destination stop updating it
+  else
+  {
+    return false;
+  }
+
+  return true;
 }

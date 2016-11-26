@@ -20,8 +20,8 @@ int main()
     return 0;
   }
 
-  // Generate the graph between all taxis
-  taxiSimulation->generateGraph();
+  // Start the taxi simulation
+  taxiSimulation->startSimulation();
 
   return 0;
 }
@@ -52,7 +52,6 @@ bool readIn(Simulation *taxiSimulation)
 
   // Get Map Size and units used
   root_node = root_node->first_node("MapSize");
-  taxiSimulation->setMapUnits(root_node->first_attribute("units")->value());
   taxiSimulation->setMapXSize(root_node->first_attribute("xSize")->value());
   taxiSimulation->setMapYSize(root_node->first_attribute("ySize")->value());
 
@@ -90,8 +89,6 @@ bool readIn(Simulation *taxiSimulation)
 
     taxiSimulation->addTaxi(temp);
 	}
-
-  taxiSimulation->outputTaxis();
 
   return true;
 }

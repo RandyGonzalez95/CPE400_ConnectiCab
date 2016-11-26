@@ -1,35 +1,34 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
+#include <iostream>
 #include "taxi.h"
 #include <vector>
-#include <iostream>
-#include <boost/graph/adjacency_list.hpp>
+#include <math.h>
 
 class Simulation {
 
   public:
-    Simulation();
-    ~Simulation();
+    Simulation(); // Constructor
+    ~Simulation(); // Destructor
 
     // Data member sets
-    void setMapXSize(char* xSize);
-    void setMapYSize(char* ySize);
-    void setMapUnits(char* units);
-    void setBluetoothRange(char* btRange);
-    void setWifiRange(char* wfRange);
-    void addTaxi(Taxi newTaxi);
+    void setMapXSize(char* xSize); // Set the map's X size
+    void setMapYSize(char* ySize); // Set the map's Y size
+    void setBluetoothRange(char* btRange); // Set the bluetooth range of the simulation
+    void setWifiRange(char* wfRange); // Set the wifi range of the simulation
+    void addTaxi(Taxi newTaxi); // Add a taxi to the taxis vector
 
-    void outputTaxis();
-    bool generateGraph();
+    void outputTaxis(); // Output all taxis in the taxis vector
+    float calculateDistance(Taxi a, Taxi b); // Calculate distance between taxi a and b using pythagorean theorem
+    void startSimulation();
 
   private:
     std::vector<Taxi> taxis;
     int mapXSize;
     int mapYSize;
-    char* mapUnits;
-    double bluetoothRange;
-    double wifiRange;
+    float bluetoothRange;
+    float wifiRange;
 };
 
 #endif // SIMULATION_H
