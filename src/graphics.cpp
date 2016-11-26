@@ -28,3 +28,26 @@ SDL_Window* Graphics::getWindow()
 {
   return window;
 }
+
+void Graphics::drawScene(int windowXSize, int windowYSize)
+{
+  int test = windowXSize * 0.25;
+  int test2 = windowYSize * 0.25;
+
+  SDL_Rect drawRect = {test - 20, test2 - 20, 70 * 10, 70 * 5};
+  SDL_SetRenderDrawColor(renderer, 84, 84, 84, 255);
+  SDL_RenderDrawRect(renderer, &drawRect);
+
+  for(int i = 0; i < 5; i++)
+  {
+    for(int j = 0; j < 10; j++)
+    {
+      SDL_Rect fillRect = {test, test2, 20, 30};
+      SDL_SetRenderDrawColor(renderer, 84, 84, 84, 255);
+      SDL_RenderFillRect(renderer, &fillRect);
+      test += 70;
+    }
+    test = windowXSize * 0.25;
+    test2 += 70;
+  }
+}

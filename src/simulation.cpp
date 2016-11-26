@@ -113,6 +113,7 @@ void Simulation::startSimulation()
   // Keep looping until all taxis reach their destination
   while(taxiMovementFlag && !quit)
   {
+    // Update every 1 second
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // Update the taxis each taxi is broadcasting to
@@ -124,24 +125,35 @@ void Simulation::startSimulation()
     // Check through queue of SDL events for a quit
     while(SDL_PollEvent(&m_event) != 0)
     {
-      // If user closes SDL box
+      // If user hits 'x' in top right quit program
       if(m_event.type == SDL_QUIT)
       {
         quit = true;
       }
+
+      else if (m_event.type == SDL_KEYDOWN)
+      {
+        // If escape key is pressed quit program
+        if (m_event.key.keysym.sym == SDLK_ESCAPE)
+        {
+          quit = true;
+        }
+      }
     }
 
     // Clear screen with white
-    SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 147, 147, 147, 255);
     SDL_RenderClear(graphicInterface->getRenderer());
 
     // Output red boxes for all taxis
     for(unsigned int i = 0; i < taxis.size(); i++)
     {
-      SDL_Rect fillRect = {taxis[i].locationXCoord, taxis[i].locationYCoord, 20, 20};
-      SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0xFF, 0x00, 0x00, 0xFF);
-      SDL_RenderDrawRect(graphicInterface->getRenderer(), &fillRect);
+      SDL_Rect drawRect = {taxis[i].locationXCoord, taxis[i].locationYCoord, 17, 15};
+      SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 229, 229, 0, 255);
+      SDL_RenderFillRect(graphicInterface->getRenderer(), &drawRect);
     }
+
+    graphicInterface->drawScene(mapXSize, mapYSize);
 
     SDL_RenderPresent(graphicInterface->getRenderer());
   }

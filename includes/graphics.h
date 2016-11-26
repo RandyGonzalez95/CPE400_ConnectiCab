@@ -12,6 +12,7 @@ class Graphics {
     // Data member gets
     SDL_Renderer* getRenderer(); // Returns the renderer
     SDL_Window* getWindow(); // Returns the window
+    void drawScene(int windowXSize, int windowYSize); // Draw the buildings and streets
 
   private:
     SDL_Window *window = NULL;
