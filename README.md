@@ -15,4 +15,8 @@ cp ../makefile .
 make
 ./ConnectiCab
 ```
-Alternatively you can run the bash script provided "run.sh" by simply running ./run.sh
+Alternatively you can run the bash script provided "run.sh" by simply running:
+
+```bash
+./run.sh
+```
