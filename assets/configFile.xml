@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ConnectiCab version="1.0">
-  <MapSize xSize="1280" ySize="720"/>
-  <Wifi range="60"/>
-  <Bluetooth range="20"/>
+  <Wifi range="100"/>
+  <Bluetooth range="50"/>
   <Taxis>
     <Taxi>
       <Location xCoord="350" yCoord="225"/>

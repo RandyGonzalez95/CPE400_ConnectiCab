@@ -10,16 +10,6 @@ Simulation::~Simulation()
   std::vector<Taxi>().swap(taxis);
 }
 
-void Simulation::setMapXSize(char* xSize)
-{
-  mapXSize = atof(xSize);
-}
-
-void Simulation::setMapYSize(char* ySize)
-{
-  mapYSize = atof(ySize);
-}
-
 void Simulation::setBluetoothRange(char* btRange)
 {
   bluetoothRange = atof(btRange);
@@ -66,7 +56,7 @@ bool Simulation::updateTaxiLocations()
   return movementFlag;
 }
 
-void Simulation::updateTaxiBroadcasts()
+void Simulation::updateTaxiBroadcasts(Graphics *graphicInterface)
 {
   // Variables
   float distance;
@@ -88,12 +78,16 @@ void Simulation::updateTaxiBroadcasts()
         if(distance <= bluetoothRange)
         {
           std::cout << "Taxi " << i << " is broadcasting bluetooth to Taxi " << j << std::endl << std::endl;
+          SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0, 200, 0, 255);
+          SDL_RenderDrawLine(graphicInterface->getRenderer(), taxis[i].locationXCoord, taxis[i].locationYCoord, taxis[j].locationXCoord, taxis[j].locationYCoord);
         }
 
         // Else check if distance is small enough to broadcast with wifi
         else if(distance <= wifiRange)
         {
           std::cout << "Taxi " << i << " is broadcasting wifi to Taxi " << j << std::endl << std::endl;
+          SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0, 0, 200, 255);
+          SDL_RenderDrawLine(graphicInterface->getRenderer(), taxis[i].locationXCoord, taxis[i].locationYCoord, taxis[j].locationXCoord, taxis[j].locationYCoord);
         }
       }
     }
@@ -105,10 +99,9 @@ void Simulation::startSimulation()
   // Variables
   bool taxiMovementFlag = true;
   bool quit = false;
-  SDL_Event m_event;
 
   // Set up graphic interface
-  Graphics *graphicInterface = new Graphics(mapXSize, mapYSize);
+  Graphics *graphicInterface = new Graphics();
 
   // Keep looping until all taxis reach their destination
   while(taxiMovementFlag && !quit)
@@ -116,45 +109,23 @@ void Simulation::startSimulation()
     // Update every 1 second
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    // Update the taxis each taxi is broadcasting to
-    updateTaxiBroadcasts();
+    // Check for user to quit the program
+    quit = graphicInterface->checkForEvents();
+
+    // Draw the buildings and background
+    graphicInterface->drawScene();
 
     // Update all taxis location
     taxiMovementFlag = updateTaxiLocations();
 
-    // Check through queue of SDL events for a quit
-    while(SDL_PollEvent(&m_event) != 0)
-    {
-      // If user hits 'x' in top right quit program
-      if(m_event.type == SDL_QUIT)
-      {
-        quit = true;
-      }
+    // Update the taxis each taxi is broadcasting to
+    updateTaxiBroadcasts(graphicInterface);
 
-      else if (m_event.type == SDL_KEYDOWN)
-      {
-        // If escape key is pressed quit program
-        if (m_event.key.keysym.sym == SDLK_ESCAPE)
-        {
-          quit = true;
-        }
-      }
-    }
 
-    // Clear screen with white
-    SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 147, 147, 147, 255);
-    SDL_RenderClear(graphicInterface->getRenderer());
+    // Draw the taxis on the screen
+    graphicInterface->drawTaxis(taxis);
 
-    // Output red boxes for all taxis
-    for(unsigned int i = 0; i < taxis.size(); i++)
-    {
-      SDL_Rect drawRect = {taxis[i].locationXCoord, taxis[i].locationYCoord, 17, 15};
-      SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 229, 229, 0, 255);
-      SDL_RenderFillRect(graphicInterface->getRenderer(), &drawRect);
-    }
-
-    graphicInterface->drawScene(mapXSize, mapYSize);
-
+    // Render all graphics
     SDL_RenderPresent(graphicInterface->getRenderer());
   }
 

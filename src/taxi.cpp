@@ -33,6 +33,16 @@ void Taxi::setSpeed(char* taxSpeed)
   speed = atoi(taxSpeed);
 }
 
+int Taxi::getLocationXCoord()
+{
+  return locationXCoord;
+}
+
+int Taxi::getLocationYCoord()
+{
+  return locationYCoord;
+}
+
 bool Taxi::updateLocation()
 {
   // Check if the Taxi is hitting the destination xCoord

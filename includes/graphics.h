@@ -2,17 +2,21 @@
 #define GRAPHICS_H
 
 #include "SDL2/SDL.h"
+#include <vector>
+#include "taxi.h"
 
 class Graphics {
 
   public:
-    Graphics(int windowXSize, int windowYSize); // Param Constructor
+    Graphics(); // Constructor
     ~Graphics(); // Destructor
 
     // Data member gets
     SDL_Renderer* getRenderer(); // Returns the renderer
     SDL_Window* getWindow(); // Returns the window
-    void drawScene(int windowXSize, int windowYSize); // Draw the buildings and streets
+    void drawScene(); // Draw the buildings
+    bool checkForEvents();
+    void drawTaxis(std::vector<Taxi> taxis);
 
   private:
     SDL_Window *window = NULL;

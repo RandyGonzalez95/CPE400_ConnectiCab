@@ -53,13 +53,8 @@ bool readIn(Simulation *taxiSimulation)
   // Get root node
   root_node = doc.first_node("ConnectiCab");
 
-  // Get Map Size and units used
-  root_node = root_node->first_node("MapSize");
-  taxiSimulation->setMapXSize(root_node->first_attribute("xSize")->value());
-  taxiSimulation->setMapYSize(root_node->first_attribute("ySize")->value());
-
   // Get Wifi Range
-  root_node = root_node->next_sibling("Wifi");
+  root_node = root_node->first_node("Wifi");
   taxiSimulation->setWifiRange(root_node->first_attribute("range")->value());
 
   // Get Bluetooth Range

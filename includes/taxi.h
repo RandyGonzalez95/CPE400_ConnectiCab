@@ -17,6 +17,10 @@ class Taxi {
     void setDestinationYCoord(char* yCoord); // Set the destination Y Coord
     void setSpeed(char* taxSpeed); // Set the speed of the taxi
 
+    // Data member gets
+    int getLocationXCoord();
+    int getLocationYCoord();
+
     bool updateLocation(); // Update the location of the taxi based on its speed
 
   private:
