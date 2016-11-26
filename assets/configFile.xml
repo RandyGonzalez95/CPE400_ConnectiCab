@@ -6,7 +6,7 @@
   <Taxis>
     <Taxi>
       <Location xCoord="200" yCoord="500"/>
-      <Destination xCoord="200" yCoord="600"/>
+      <Destination xCoord="200" yCoord="520"/>
       <Speed value="2"/>
     </Taxi>
     <Taxi>

@@ -35,4 +35,4 @@ taxi.o: ../src/taxi.cpp
 
 
 clean:
-	-@if rm *.o ConnectiCab 2>/dev/null || true; then echo "Main Removed"; else echo "No Main"; fi
+	rm *.o ConnectiCab 
