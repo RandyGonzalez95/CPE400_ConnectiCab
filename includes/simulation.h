@@ -1,13 +1,13 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include <iostream>
 #include "taxi.h"
+#include "graphics.h"
+#include <iostream>
 #include <vector>
 #include <math.h>
 #include <chrono>
 #include <thread>
-#include "graphics.h"
 
 class Simulation {
 
@@ -22,15 +22,10 @@ class Simulation {
     void setWifiRange(char* wfRange); // Set the wifi range of the simulation
     void addTaxi(Taxi newTaxi); // Add a taxi to the taxis vector
 
-    // Data member gets
-    int getMapXSize();
-    int getMapYSize();
-
-    void outputTaxis(); // Output all taxis in the taxis vector
     float calculateDistance(Taxi a, Taxi b); // Calculate distance between taxi a and b using pythagorean theorem
-    bool updateTaxiLocations();
-    void updateTaxiBroadcasts();
-    void startSimulation();
+    bool updateTaxiLocations(); // Update the taxi location based on its speed
+    void updateTaxiBroadcasts(); // Update who the taxis are broadcasting between
+    void startSimulation(); // Start the simulation
 
   private:
     std::vector<Taxi> taxis;

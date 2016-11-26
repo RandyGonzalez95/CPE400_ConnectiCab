@@ -35,28 +35,32 @@ void Taxi::setSpeed(char* taxSpeed)
 
 bool Taxi::updateLocation()
 {
-  // Move the taxi to the correct x Coord first
+  // Check if the Taxi is hitting the destination xCoord
   if(locationXCoord < destinationXCoord - speed || locationXCoord > destinationXCoord + speed)
   {
+    // If its below the destination move the x coord positive
     if(locationXCoord < destinationXCoord)
     {
       locationXCoord += speed;
     }
 
+    // Else move the x coord negative
     else
     {
       locationXCoord -= speed;
     }
   }
 
-  // Then move it to the correct y Coord
+  // Check if the Taxi is hitting the destination yCoord
   else if(locationYCoord < destinationYCoord - speed || locationYCoord > destinationYCoord + speed)
   {
+    // If its below the destination move the y coord positive
     if(locationYCoord < destinationYCoord)
     {
       locationYCoord += speed;
     }
 
+    // Else move the y coord negative
     else
     {
       locationYCoord -= speed;

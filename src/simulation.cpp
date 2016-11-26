@@ -13,53 +13,26 @@ Simulation::~Simulation()
 void Simulation::setMapXSize(char* xSize)
 {
   mapXSize = atof(xSize);
-//  std::cout << "Map X Size: " << mapXSize << std::endl;
 }
 
 void Simulation::setMapYSize(char* ySize)
 {
   mapYSize = atof(ySize);
-//  std::cout << "Map Y Size: " << mapYSize << std::endl;
 }
 
 void Simulation::setBluetoothRange(char* btRange)
 {
   bluetoothRange = atof(btRange);
-//  std::cout << "Bluetooth Range: " << bluetoothRange << std::endl;
 }
 
 void Simulation::setWifiRange(char* wfRange)
 {
   wifiRange = atof(wfRange);
-//  std::cout << "Wifi Range: " << wifiRange << std::endl;
 }
 
 void Simulation::addTaxi(Taxi newTaxi)
 {
   taxis.push_back(newTaxi);
-}
-
-int Simulation::getMapXSize()
-{
-  return mapXSize;
-}
-
-int Simulation::getMapYSize()
-{
-  return mapYSize;
-}
-
-void Simulation::outputTaxis()
-{
-  for(unsigned int i = 0; i < taxis.size(); i++)
-  {
-    std::cout << "TAXI " << i << " INFO:" << std::endl;
-    std::cout << "Location X Coord: " << taxis[i].locationXCoord << std::endl;
-    std::cout << "Location Y Coord: " << taxis[i].locationYCoord << std::endl;
-    std::cout << "Destination X Coord: " << taxis[i].destinationXCoord << std::endl;
-    std::cout << "Destination Y Coord: " << taxis[i].destinationYCoord << std::endl;
-    std::cout << "Speed: " << taxis[i].speed << std::endl;
-  }
 }
 
 float Simulation::calculateDistance(Taxi a, Taxi b)
@@ -68,7 +41,7 @@ float Simulation::calculateDistance(Taxi a, Taxi b)
   int xLocation = a.locationXCoord - b.locationXCoord;
   int yLocation = a.locationYCoord - b.locationYCoord;
 
-  // Square the x and y and then sqrt in order to find distance using pythagorean theorem
+  // Square the x and y and then sqrt the sum in order to find distance using pythagorean theorem
   float calculation = xLocation * xLocation + yLocation * yLocation;
   calculation = sqrt(calculation);
 
@@ -77,11 +50,13 @@ float Simulation::calculateDistance(Taxi a, Taxi b)
 
 bool Simulation::updateTaxiLocations()
 {
+  // Variables
   bool movementFlag = false;
 
+  // Go through all taxis and update their location
   for(unsigned int i = 0; i < taxis.size(); i++)
   {
-    // Check if the taxi was updated, if it was set the movement flag
+    // Check if the taxi was updated, if it was updated set the movement flag
     if(taxis[i].updateLocation())
     {
       movementFlag = true;
@@ -93,9 +68,10 @@ bool Simulation::updateTaxiLocations()
 
 void Simulation::updateTaxiBroadcasts()
 {
+  // Variables
   float distance;
 
-  // Check for taxis to broadcast to
+  // Need to check each taxi with every other taxi to determine if they are in range
   for(unsigned int i = 0; i < taxis.size(); i++)
   {
     for(unsigned int j = 0; j < taxis.size(); j++)
@@ -105,13 +81,16 @@ void Simulation::updateTaxiBroadcasts()
 
       else // Check if the distance is small enough to start broadcasting
       {
+        // Calculate distance
         distance = calculateDistance(taxis[i], taxis[j]);
 
+        // Check if distance is small enough to reach with bluetooth
         if(distance <= bluetoothRange)
         {
           std::cout << "Taxi " << i << " is broadcasting bluetooth to Taxi " << j << std::endl << std::endl;
         }
 
+        // Else check if distance is small enough to broadcast with wifi
         else if(distance <= wifiRange)
         {
           std::cout << "Taxi " << i << " is broadcasting wifi to Taxi " << j << std::endl << std::endl;
@@ -123,13 +102,16 @@ void Simulation::updateTaxiBroadcasts()
 
 void Simulation::startSimulation()
 {
+  // Variables
   bool taxiMovementFlag = true;
+  bool quit = false;
   SDL_Event m_event;
 
+  // Set up graphic interface
   Graphics *graphicInterface = new Graphics(mapXSize, mapYSize);
 
   // Keep looping until all taxis reach their destination
-  while(taxiMovementFlag)
+  while(taxiMovementFlag && !quit)
   {
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -139,28 +121,30 @@ void Simulation::startSimulation()
     // Update all taxis location
     taxiMovementFlag = updateTaxiLocations();
 
+    // Check through queue of SDL events for a quit
     while(SDL_PollEvent(&m_event) != 0)
     {
+      // If user closes SDL box
       if(m_event.type == SDL_QUIT)
       {
-        taxiMovementFlag = false;
+        quit = true;
       }
     }
 
-    SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
+    // Clear screen with white
+    SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(graphicInterface->getRenderer());
 
-    //Render red filled quad
+    // Output red boxes for all taxis
     for(unsigned int i = 0; i < taxis.size(); i++)
     {
-      SDL_Rect fillRect = {  taxis[i].locationXCoord, taxis[i].locationYCoord, 20, 20 };
-      SDL_SetRenderDrawColor( graphicInterface->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
-      SDL_RenderDrawRect( graphicInterface->getRenderer(), &fillRect );
+      SDL_Rect fillRect = {taxis[i].locationXCoord, taxis[i].locationYCoord, 20, 20};
+      SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0xFF, 0x00, 0x00, 0xFF);
+      SDL_RenderDrawRect(graphicInterface->getRenderer(), &fillRect);
     }
 
     SDL_RenderPresent(graphicInterface->getRenderer());
   }
 
-  SDL_DestroyRenderer(graphicInterface->getRenderer());
-  SDL_DestroyWindow(graphicInterface->getWindow());
+  delete graphicInterface;
 }

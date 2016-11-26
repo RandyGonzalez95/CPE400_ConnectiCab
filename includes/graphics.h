@@ -7,10 +7,11 @@ class Graphics {
 
   public:
     Graphics(int windowXSize, int windowYSize); // Param Constructor
+    ~Graphics(); // Destructor
 
     // Data member gets
-    SDL_Renderer* getRenderer();
-    SDL_Window* getWindow();
+    SDL_Renderer* getRenderer(); // Returns the renderer
+    SDL_Window* getWindow(); // Returns the window
 
   private:
     SDL_Window *window = NULL;

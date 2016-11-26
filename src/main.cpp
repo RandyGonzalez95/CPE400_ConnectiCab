@@ -20,7 +20,11 @@ int main()
     return 0;
   }
 
+  // Start taxi simulation
   taxiSimulation->startSimulation();
+
+  // Delete taxi simulation
+  delete taxiSimulation;
 
   return 0;
 }
@@ -86,8 +90,12 @@ bool readIn(Simulation *taxiSimulation)
     taxiInfo_node = taxiInfo_node->next_sibling("Speed");
     temp.setSpeed(taxiInfo_node->first_attribute("value")->value());
 
+    // Add taxi to vector of taxis
     taxiSimulation->addTaxi(temp);
 	}
+
+  // Deallocate buffer vector
+  vector<char>().swap(buffer);
 
   return true;
 }
