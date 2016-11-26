@@ -5,6 +5,9 @@
 #include "taxi.h"
 #include <vector>
 #include <math.h>
+#include <chrono>
+#include <thread>
+#include "graphics.h"
 
 class Simulation {
 
@@ -18,6 +21,10 @@ class Simulation {
     void setBluetoothRange(char* btRange); // Set the bluetooth range of the simulation
     void setWifiRange(char* wfRange); // Set the wifi range of the simulation
     void addTaxi(Taxi newTaxi); // Add a taxi to the taxis vector
+
+    // Data member gets
+    int getMapXSize();
+    int getMapYSize();
 
     void outputTaxis(); // Output all taxis in the taxis vector
     float calculateDistance(Taxi a, Taxi b); // Calculate distance between taxi a and b using pythagorean theorem

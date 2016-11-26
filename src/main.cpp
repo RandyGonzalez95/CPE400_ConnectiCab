@@ -20,7 +20,6 @@ int main()
     return 0;
   }
 
-  // Start the taxi simulation
   taxiSimulation->startSimulation();
 
   return 0;

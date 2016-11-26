@@ -39,6 +39,16 @@ void Simulation::addTaxi(Taxi newTaxi)
   taxis.push_back(newTaxi);
 }
 
+int Simulation::getMapXSize()
+{
+  return mapXSize;
+}
+
+int Simulation::getMapYSize()
+{
+  return mapYSize;
+}
+
 void Simulation::outputTaxis()
 {
   for(unsigned int i = 0; i < taxis.size(); i++)
@@ -114,14 +124,43 @@ void Simulation::updateTaxiBroadcasts()
 void Simulation::startSimulation()
 {
   bool taxiMovementFlag = true;
+  SDL_Event m_event;
+
+  Graphics *graphicInterface = new Graphics(mapXSize, mapYSize);
 
   // Keep looping until all taxis reach their destination
   while(taxiMovementFlag)
   {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     // Update the taxis each taxi is broadcasting to
     updateTaxiBroadcasts();
 
     // Update all taxis location
     taxiMovementFlag = updateTaxiLocations();
+
+    while(SDL_PollEvent(&m_event) != 0)
+    {
+      if(m_event.type == SDL_QUIT)
+      {
+        taxiMovementFlag = false;
+      }
+    }
+
+    SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
+    SDL_RenderClear(graphicInterface->getRenderer());
+
+    //Render red filled quad
+    for(unsigned int i = 0; i < taxis.size(); i++)
+    {
+      SDL_Rect fillRect = {  taxis[i].locationXCoord, taxis[i].locationYCoord, 20, 20 };
+      SDL_SetRenderDrawColor( graphicInterface->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
+      SDL_RenderDrawRect( graphicInterface->getRenderer(), &fillRect );
+    }
+
+    SDL_RenderPresent(graphicInterface->getRenderer());
   }
+
+  SDL_DestroyRenderer(graphicInterface->getRenderer());
+  SDL_DestroyWindow(graphicInterface->getWindow());
 }

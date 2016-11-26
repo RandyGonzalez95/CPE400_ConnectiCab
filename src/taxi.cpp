@@ -50,7 +50,7 @@ bool Taxi::updateLocation()
   }
 
   // Then move it to the correct y Coord
-  if(locationYCoord < destinationYCoord - speed || locationYCoord > destinationYCoord + speed)
+  else if(locationYCoord < destinationYCoord - speed || locationYCoord > destinationYCoord + speed)
   {
     if(locationYCoord < destinationYCoord)
     {

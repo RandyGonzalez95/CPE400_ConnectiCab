@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ConnectiCab version="1.0">
-  <MapSize xSize="20" ySize="20"/>
+  <MapSize xSize="1280" ySize="720"/>
   <Wifi range="7"/>
   <Bluetooth range="2"/>
   <Taxis>
     <Taxi>
-      <Location xCoord="1" yCoord="2"/>
-      <Destination xCoord="7" yCoord="3"/>
+      <Location xCoord="200" yCoord="500"/>
+      <Destination xCoord="200" yCoord="600"/>
       <Speed value="2"/>
     </Taxi>
     <Taxi>
-      <Location xCoord="2" yCoord="1"/>
-      <Destination xCoord="2" yCoord="5"/>
+      <Location xCoord="300" yCoord="100"/>
+      <Destination xCoord="300" yCoord="2"/>
       <Speed value="1"/>
     </Taxi>
     <Taxi>
       <Location xCoord="3" yCoord="2"/>
-      <Destination xCoord="10" yCoord="1"/>
+      <Destination xCoord="1000" yCoord="200"/>
       <Speed value="3"/>
     </Taxi>
   </Taxis>
