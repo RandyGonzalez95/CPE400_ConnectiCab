@@ -1,8 +1,14 @@
+# Linux
 CC=g++
 
+#Libraries
 LIBS=-lSDL2
 
-#Compiler Flags
+# Paths, use this to set Include directories, or library directories; uncomment in all: if used
+#PATHI=-I/usr/local/include/
+#PATHL=-L/usr/local/lib/
+
+# Compiler Flags
 CXXFLAGS=-g -Wall -std=c++0x
 
 # .o Compilation
