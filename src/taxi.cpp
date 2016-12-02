@@ -34,6 +34,16 @@ void Taxi::setSpeed(char* taxSpeed)
   speed = atoi(taxSpeed);
 }
 
+void Taxi::setPacket(Packet* packet)
+{
+  packetToTransmit = packet;
+}
+
+Packet* Taxi::getPacket()
+{
+  return packetToTransmit;
+}
+
 int Taxi::getLocationXCoord()
 {
   return locationXCoord;

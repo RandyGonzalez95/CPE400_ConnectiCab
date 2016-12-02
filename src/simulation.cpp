@@ -70,7 +70,7 @@ bool Simulation::broadcastMessage(Graphics *graphicInterface, Packet* packet)
       {}
 
       // Check if the source taxi has the packet and that the destination packet does not have the packet
-      else if(taxis[i].packetToTransmit != NULL && taxis[j].packetToTransmit == NULL)
+      else if(taxis[i].getPacket() != NULL && taxis[j].getPacket() == NULL)
       {
         // Calculate distance
         distance = calculateDistance(taxis[i], taxis[j]);
@@ -85,10 +85,10 @@ bool Simulation::broadcastMessage(Graphics *graphicInterface, Packet* packet)
           graphicInterface->drawBluetoothline(taxis[i], taxis[j]);
 
           // Transmit the message to taxis[j]
-          taxis[j].packetToTransmit = packet;
+          taxis[j].setPacket(packet);
 
           // Check if that taxi is the destination taxi
-          if(packet->destinationTaxi == (int)j)
+          if(packet->getDestinationTaxi() == (int)j)
           {
             return true;
           }
@@ -103,12 +103,11 @@ bool Simulation::broadcastMessage(Graphics *graphicInterface, Packet* packet)
           // Draw a line between each taxi indicating wifi
           graphicInterface->drawWifiLine(taxis[i], taxis[j]);
 
-
           // Transmit the message to taxis[j]
-          taxis[j].packetToTransmit = packet;
+          taxis[j].setPacket(packet);
 
           // Check if that taxis is the destination taxi
-          if(packet->destinationTaxi == (int)j)
+          if(packet->getDestinationTaxi() == (int)j)
           {
             return true;
           }
@@ -139,7 +138,6 @@ void Simulation::startSimulation(int sourceTaxi, int destinationTaxi)
   // Keep looping until all taxis reach their destination or packet is received
   while(!quit)
   {
-
     // Update every 1 second
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -149,6 +147,7 @@ void Simulation::startSimulation(int sourceTaxi, int destinationTaxi)
     // Draw the buildings and background
     graphicInterface->drawScene();
 
+    // If packet has been received dont update taxis anymore
     if(!packetReceived)
     {
       // Update all taxis location
@@ -161,6 +160,7 @@ void Simulation::startSimulation(int sourceTaxi, int destinationTaxi)
         std::cout << std::endl << "PACKET HAS BEEN RECEIVED" << std::endl;
       }
     }
+
     // Draw the taxis on the screen
     graphicInterface->drawTaxis(taxis);
 

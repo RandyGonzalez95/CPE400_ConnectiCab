@@ -8,10 +8,13 @@ class Packet {
   public:
     Packet();
     Packet(int source, int destination, int destinationXCoord, int destinationYCoord, int speed);
-int destinationTaxi;
+
+    // Data member gets
+    int getDestinationTaxi(); // Get Destination taxi
+
   private:
     int sourceTaxi;
-
+    int destinationTaxi;
     std::string message;
 };
 

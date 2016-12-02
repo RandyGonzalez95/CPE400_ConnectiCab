@@ -31,28 +31,31 @@ SDL_Window* Graphics::getWindow()
 
 void Graphics::drawScene()
 {
-  int test = 320;
-  int test2 = 180;
+  int xVal = 320;
+  int yVal = 180;
 
-  // Clear screen with white
+  // Clear screen with background color
   SDL_SetRenderDrawColor(renderer, 147, 147, 147, 255);
   SDL_RenderClear(renderer);
 
-  SDL_Rect drawRect = {test, test2, 650, 310};
+  // Draw rectangle around city
+  SDL_Rect drawRect = {xVal, yVal, 650, 310};
   SDL_SetRenderDrawColor(renderer, 84, 84, 84, 255);
   SDL_RenderDrawRect(renderer, &drawRect);
 
+  // Create all of the buildings on the screen
   for(int i = 0; i < 5; i++)
   {
     for(int j = 0; j < 10; j++)
     {
-      SDL_Rect fillRect = {test, test2, 20, 30};
+      SDL_Rect fillRect = {xVal, yVal, 20, 30};
       SDL_SetRenderDrawColor(renderer, 84, 84, 84, 255);
       SDL_RenderFillRect(renderer, &fillRect);
-      test += 70;
+      xVal += 70;
     }
-    test = 320;
-    test2 += 70;
+
+    xVal = 320;
+    yVal += 70;
   }
 }
 
@@ -84,16 +87,18 @@ bool Graphics::checkForEvents()
 
 void Graphics::drawTaxis(std::vector<Taxi> taxis)
 {
-  // Output yellow boxes for each taxis location
+  // Go through each taxi in the list
   for(unsigned int i = 0; i < taxis.size(); i++)
   {
-    if(taxis[i].packetToTransmit != NULL)
+    // If the taxi has the packet make the taxi red
+    if(taxis[i].getPacket() != NULL)
     {
       SDL_Rect drawRect = {taxis[i].getLocationXCoord(), taxis[i].getLocationYCoord(), 17, 15};
       SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
       SDL_RenderFillRect(renderer, &drawRect);
     }
 
+    // Else make the taxi yellow
     else
     {
       SDL_Rect drawRect = {taxis[i].getLocationXCoord(), taxis[i].getLocationYCoord(), 17, 15};

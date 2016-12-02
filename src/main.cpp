@@ -10,15 +10,17 @@ bool readIn(Simulation *taxiSimulation);
 
 int main()
 {
-  // Create new taxi simulation
-  Simulation *taxiSimulation = new Simulation();
-
   int sourceTaxi;
   int destinationTaxi;
 
-  std::cout << "Source Taxi (0-8): ";
+  // Create new taxi simulation
+  Simulation *taxiSimulation = new Simulation();
+
+  // Get users choice of source taxi
+  std::cout << std::endl << "Source Taxi (0-8): ";
   std::cin >> sourceTaxi;
 
+  // Get users choice of destination taxi
   std::cout << "Destination Taxi (0-8): ";
   std::cin >> destinationTaxi;
 
