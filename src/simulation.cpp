@@ -120,18 +120,18 @@ bool Simulation::broadcastMessage(Graphics *graphicInterface, Packet* packet)
   return false;
 }
 
-void Simulation::startSimulation()
+void Simulation::startSimulation(int sourceTaxi, int destinationTaxi)
 {
   // Variables
-  bool taxiMovementFlag = true;
   bool quit = false;
   bool packetReceived = false;
 
   // Create the packet that will be transmitted to the destination taxi
-  Packet* packet = new Packet(0, 3, taxis[3].locationXCoord, taxis[3].locationYCoord, taxis[3].speed);
+  Packet* packet = new Packet(sourceTaxi, destinationTaxi, taxis[destinationTaxi].locationXCoord,
+                              taxis[destinationTaxi].locationYCoord, taxis[destinationTaxi].speed);
 
   // Start the packet at the start taxi
-  taxis[0].packetToTransmit = packet;
+  taxis[sourceTaxi].packetToTransmit = packet;
 
   // Set up graphic interface
   Graphics *graphicInterface = new Graphics();
@@ -158,6 +158,7 @@ void Simulation::startSimulation()
       if(broadcastMessage(graphicInterface, packet))
       {
         packetReceived = true;
+        std::cout << std::endl << "PACKET HAS BEEN RECEIVED" << std::endl;
       }
     }
     // Draw the taxis on the screen

@@ -13,6 +13,15 @@ int main()
   // Create new taxi simulation
   Simulation *taxiSimulation = new Simulation();
 
+  int sourceTaxi;
+  int destinationTaxi;
+
+  std::cout << "Source Taxi (0-8): ";
+  std::cin >> sourceTaxi;
+
+  std::cout << "Destination Taxi (0-8): ";
+  std::cin >> destinationTaxi;
+
   // Read in data from XML config file
   if(!readIn(taxiSimulation))
   {
@@ -21,7 +30,7 @@ int main()
   }
 
   // Start taxi simulation
-  taxiSimulation->startSimulation();
+  taxiSimulation->startSimulation(sourceTaxi, destinationTaxi);
 
   // Delete taxi simulation
   delete taxiSimulation;
