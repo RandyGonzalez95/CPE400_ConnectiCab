@@ -152,7 +152,7 @@ void Simulation::startSimulation(int sourceTaxi, int destinationTaxi)
     if(!packetReceived)
     {
       // Update all taxis location
-      taxiMovementFlag = updateTaxiLocations();
+      updateTaxiLocations();
 
       // Broadcast the message to all nearby taxis until destination taxi is found
       if(broadcastMessage(graphicInterface, packet))
