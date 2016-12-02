@@ -1,7 +1,7 @@
 #ifndef TAXI_H
 #define TAXI_H
 
-#include <string>
+#include "packet.h"
 
 class Taxi {
   friend class Simulation;
@@ -20,15 +20,17 @@ class Taxi {
     // Data member gets
     int getLocationXCoord();
     int getLocationYCoord();
+    int getSpeed();
 
     bool updateLocation(); // Update the location of the taxi based on its speed
-
+Packet* packetToTransmit;
   private:
     int locationXCoord;
     int locationYCoord;
     int destinationXCoord;
     int destinationYCoord;
     int speed;
+
 };
 
 #endif // TAXI_H

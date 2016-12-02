@@ -56,7 +56,7 @@ bool Simulation::updateTaxiLocations()
   return movementFlag;
 }
 
-void Simulation::updateTaxiBroadcasts(Graphics *graphicInterface)
+bool Simulation::broadcastMessage(Graphics *graphicInterface, Packet* packet)
 {
   // Variables
   float distance;
@@ -69,7 +69,8 @@ void Simulation::updateTaxiBroadcasts(Graphics *graphicInterface)
       if(i == j) // Do nothing as it is the same taxi
       {}
 
-      else // Check if the distance is small enough to start broadcasting
+      // Check if the source taxi has the packet and that the destination packet does not have the packet
+      else if(taxis[i].packetToTransmit != NULL && taxis[j].packetToTransmit == NULL)
       {
         // Calculate distance
         distance = calculateDistance(taxis[i], taxis[j]);
@@ -77,21 +78,46 @@ void Simulation::updateTaxiBroadcasts(Graphics *graphicInterface)
         // Check if distance is small enough to reach with bluetooth
         if(distance <= bluetoothRange)
         {
-          std::cout << "Taxi " << i << " is broadcasting bluetooth to Taxi " << j << std::endl << std::endl;
-          SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0, 200, 0, 255);
-          SDL_RenderDrawLine(graphicInterface->getRenderer(), taxis[i].locationXCoord, taxis[i].locationYCoord, taxis[j].locationXCoord, taxis[j].locationYCoord);
+          // Output message of where packet is transmitting
+          std::cout << "Packet is broadcast via bluetooth from Taxi " << i << " to Taxi " << j << std::endl;
+
+          // Draw a line between each taxi indicating bluetooth connection
+          graphicInterface->drawBluetoothline(taxis[i], taxis[j]);
+
+          // Transmit the message to taxis[j]
+          taxis[j].packetToTransmit = packet;
+
+          // Check if that taxi is the destination taxi
+          if(packet->destinationTaxi == (int)j)
+          {
+            return true;
+          }
         }
 
         // Else check if distance is small enough to broadcast with wifi
         else if(distance <= wifiRange)
         {
-          std::cout << "Taxi " << i << " is broadcasting wifi to Taxi " << j << std::endl << std::endl;
-          SDL_SetRenderDrawColor(graphicInterface->getRenderer(), 0, 0, 200, 255);
-          SDL_RenderDrawLine(graphicInterface->getRenderer(), taxis[i].locationXCoord, taxis[i].locationYCoord, taxis[j].locationXCoord, taxis[j].locationYCoord);
+          // Output message of where packet is transmitting
+          std::cout << "Packet is broadcast via wifi from Taxi " << i << " to Taxi " << j << std::endl;
+
+          // Draw a line between each taxi indicating wifi
+          graphicInterface->drawWifiLine(taxis[i], taxis[j]);
+
+
+          // Transmit the message to taxis[j]
+          taxis[j].packetToTransmit = packet;
+
+          // Check if that taxis is the destination taxi
+          if(packet->destinationTaxi == (int)j)
+          {
+            return true;
+          }
         }
       }
     }
   }
+
+  return false;
 }
 
 void Simulation::startSimulation()
@@ -99,13 +125,21 @@ void Simulation::startSimulation()
   // Variables
   bool taxiMovementFlag = true;
   bool quit = false;
+  bool packetReceived = false;
+
+  // Create the packet that will be transmitted to the destination taxi
+  Packet* packet = new Packet(0, 3, taxis[3].locationXCoord, taxis[3].locationYCoord, taxis[3].speed);
+
+  // Start the packet at the start taxi
+  taxis[0].packetToTransmit = packet;
 
   // Set up graphic interface
   Graphics *graphicInterface = new Graphics();
 
-  // Keep looping until all taxis reach their destination
-  while(taxiMovementFlag && !quit)
+  // Keep looping until all taxis reach their destination or packet is received
+  while(!quit)
   {
+
     // Update every 1 second
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -115,13 +149,17 @@ void Simulation::startSimulation()
     // Draw the buildings and background
     graphicInterface->drawScene();
 
-    // Update all taxis location
-    taxiMovementFlag = updateTaxiLocations();
+    if(!packetReceived)
+    {
+      // Update all taxis location
+      taxiMovementFlag = updateTaxiLocations();
 
-    // Update the taxis each taxi is broadcasting to
-    updateTaxiBroadcasts(graphicInterface);
-
-
+      // Broadcast the message to all nearby taxis until destination taxi is found
+      if(broadcastMessage(graphicInterface, packet))
+      {
+        packetReceived = true;
+      }
+    }
     // Draw the taxis on the screen
     graphicInterface->drawTaxis(taxis);
 

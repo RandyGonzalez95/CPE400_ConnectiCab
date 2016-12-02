@@ -2,6 +2,7 @@
 
 Taxi::Taxi()
 {
+  packetToTransmit = NULL;
 }
 
 Taxi::~Taxi()
@@ -41,6 +42,11 @@ int Taxi::getLocationXCoord()
 int Taxi::getLocationYCoord()
 {
   return locationYCoord;
+}
+
+int Taxi::getSpeed()
+{
+  return speed;
 }
 
 bool Taxi::updateLocation()

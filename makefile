@@ -12,7 +12,7 @@ LIBS=-lSDL2
 CXXFLAGS=-g -Wall -std=c++0x
 
 # .o Compilation
-O_FILES=main.o taxi.o simulation.o graphics.o
+O_FILES=main.o taxi.o simulation.o graphics.o packet.o
 
 # Point to includes of local directories
 INDLUDES=-I ../includes
@@ -23,6 +23,9 @@ all: $(O_FILES)
 
 main.o: ../src/main.cpp
 	$(CC) $(CXXFLAGS) -c ../src/main.cpp -o main.o $(INDLUDES)
+
+packet.o: ../src/packet.cpp
+	$(CC) $(CXXFLAGS) -c ../src/packet.cpp -o packet.o $(INDLUDES)
 
 graphics.o: ../src/graphics.cpp
 	$(CC) $(CXXFLAGS) -c ../src/graphics.cpp -o graphics.o $(INDLUDES)
@@ -35,4 +38,4 @@ taxi.o: ../src/taxi.cpp
 
 
 clean:
-	rm *.o ConnectiCab 
+	rm *.o ConnectiCab

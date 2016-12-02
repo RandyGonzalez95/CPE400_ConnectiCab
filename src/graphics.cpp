@@ -87,8 +87,30 @@ void Graphics::drawTaxis(std::vector<Taxi> taxis)
   // Output yellow boxes for each taxis location
   for(unsigned int i = 0; i < taxis.size(); i++)
   {
-    SDL_Rect drawRect = {taxis[i].getLocationXCoord(), taxis[i].getLocationYCoord(), 17, 15};
-    SDL_SetRenderDrawColor(renderer, 229, 229, 0, 255);
-    SDL_RenderFillRect(renderer, &drawRect);
+    if(taxis[i].packetToTransmit != NULL)
+    {
+      SDL_Rect drawRect = {taxis[i].getLocationXCoord(), taxis[i].getLocationYCoord(), 17, 15};
+      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+      SDL_RenderFillRect(renderer, &drawRect);
+    }
+
+    else
+    {
+      SDL_Rect drawRect = {taxis[i].getLocationXCoord(), taxis[i].getLocationYCoord(), 17, 15};
+      SDL_SetRenderDrawColor(renderer, 229, 229, 0, 255);
+      SDL_RenderFillRect(renderer, &drawRect);
+    }
   }
+}
+
+void Graphics::drawBluetoothline(Taxi a, Taxi b)
+{
+  SDL_SetRenderDrawColor(renderer, 0, 200, 0, 255);
+  SDL_RenderDrawLine(renderer, a.getLocationXCoord(), a.getLocationYCoord(), b.getLocationXCoord(), b.getLocationYCoord());
+}
+
+void Graphics::drawWifiLine(Taxi a, Taxi b)
+{
+  SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
+  SDL_RenderDrawLine(renderer, a.getLocationXCoord(), a.getLocationYCoord(), b.getLocationXCoord(), b.getLocationYCoord());
 }

@@ -1,9 +1,9 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include "taxi.h"
 #include "SDL2/SDL.h"
 #include <vector>
-#include "taxi.h"
 
 class Graphics {
 
@@ -17,6 +17,8 @@ class Graphics {
     void drawScene(); // Draw the buildings
     bool checkForEvents();
     void drawTaxis(std::vector<Taxi> taxis);
+    void drawBluetoothline(Taxi a, Taxi b);
+    void drawWifiLine(Taxi a, Taxi b);
 
   private:
     SDL_Window *window = NULL;
